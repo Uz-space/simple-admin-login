@@ -151,7 +151,7 @@ function AdminPage() {
         <div>
           <h1 className="font-display text-2xl font-semibold text-foreground">Ruxsat yo'q</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Bu hisob admin emas. Birinchi ro'yxatdan o'tgan foydalanuvchi admin bo'ladi.
+            Bu hisob admin emas.
           </p>
           <button type="button" onClick={signOut} className={`${ghost} mt-6`}>
             Chiqish
