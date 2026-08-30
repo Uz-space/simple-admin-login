@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -54,6 +54,8 @@ function AdminPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -99,6 +101,38 @@ function AdminPage() {
     };
   }, [navigate]);
 
+
+  async function uploadAvatar(file: File) {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Faqat rasm fayli yuklanadi");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Rasm hajmi 5MB dan kichik bo'lishi kerak");
+      return;
+    }
+    setUploading(true);
+    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `avatar-${Date.now()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(path, file, { upsert: true, contentType: file.type });
+    if (uploadError) {
+      setUploading(false);
+      toast.error(uploadError.message);
+      return;
+    }
+    const { data, error } = await supabase.storage
+      .from("avatars")
+      .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+    setUploading(false);
+    if (error || !data?.signedUrl) {
+      toast.error(error?.message ?? "Rasm havolasini olish bo'lmadi");
+      return;
+    }
+    setProfile((p) => (p ? { ...p, avatar_url: data.signedUrl } : p));
+    toast.success("Rasm yuklandi — saqlashni bosing");
+  }
 
   async function saveProfile() {
     if (!profile) return;
@@ -213,12 +247,53 @@ function AdminPage() {
           placeholder="Qisqacha ma'lumot"
           onChange={(e) => setProfile((p) => (p ? { ...p, bio: e.target.value } : p))}
         />
-        <input
-          className={field}
-          value={profile?.avatar_url ?? ""}
-          placeholder="Avatar rasm havolasi (ixtiyoriy)"
-          onChange={(e) => setProfile((p) => (p ? { ...p, avatar_url: e.target.value } : p))}
-        />
+        <div className="flex items-center gap-4 rounded-2xl border border-hair p-4">
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt="Avatar"
+              className="h-16 w-16 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full border border-hair text-[10px] text-muted-foreground">
+              rasm
+            </div>
+          )}
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <span className="text-sm text-muted-foreground">Avatar rasmi</span>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className={`${ghost} px-6`}
+              >
+                {uploading ? "Yuklanmoqda…" : "Rasm tanlash"}
+              </button>
+              {profile?.avatar_url ? (
+                <button
+                  type="button"
+                  onClick={() => setProfile((p) => (p ? { ...p, avatar_url: null } : p))}
+                  className={`${ghost} px-6`}
+                >
+                  O'chirish
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (file) uploadAvatar(file);
+            }}
+          />
+        </div>
+
         <button
           type="button"
           onClick={saveProfile}
