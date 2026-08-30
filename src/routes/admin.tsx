@@ -39,9 +39,13 @@ type LinkRow = {
 const field =
   "w-full rounded-2xl border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent";
 const pill =
-  "rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
+  "rounded-2xl border border-accent bg-accent px-4 py-3 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
 const ghost =
-  "rounded-full border border-hair px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent";
+  "rounded-2xl border border-hair bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent";
+const card =
+  "rounded-3xl border border-hair bg-card/40 p-6";
+const sectionTitle =
+  "font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground";
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -179,8 +183,8 @@ function AdminPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-[560px] px-6 py-16">
-      <div className="flex items-center justify-between">
+    <main className="mx-auto w-full max-w-[640px] px-6 py-14">
+      <div className="flex items-center justify-between gap-4 border-b border-hair pb-6">
         <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
           Admin panel
         </h1>
@@ -189,10 +193,8 @@ function AdminPage() {
         </button>
       </div>
 
-      <section className="mt-10 flex flex-col gap-3">
-        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Profil
-        </h2>
+      <section className={`${card} mt-8 flex flex-col gap-3`}>
+        <h2 className={sectionTitle}>Profil</h2>
         <input
           className={field}
           value={profile?.name ?? ""}
@@ -217,17 +219,20 @@ function AdminPage() {
           placeholder="Avatar rasm havolasi (ixtiyoriy)"
           onChange={(e) => setProfile((p) => (p ? { ...p, avatar_url: e.target.value } : p))}
         />
-        <button type="button" onClick={saveProfile} disabled={saving} className={`${pill} self-start`}>
-          Saqlash
+        <button
+          type="button"
+          onClick={saveProfile}
+          disabled={saving}
+          className={`${pill} mt-1 w-full sm:w-auto sm:self-end sm:px-8`}
+        >
+          {saving ? "Saqlanmoqda…" : "Saqlash"}
         </button>
       </section>
 
-      <section className="mt-14 flex flex-col gap-5">
-        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Havolalar
-        </h2>
+      <section className={`${card} mt-6 flex flex-col gap-5`}>
+        <h2 className={sectionTitle}>Havolalar</h2>
         {links.map((l, i) => (
-          <div key={l.id} className="flex flex-col gap-2 border-t border-hair pt-5">
+          <div key={l.id} className="flex flex-col gap-2 rounded-2xl border border-hair/70 p-4">
             <input
               className={field}
               value={l.label}
@@ -246,8 +251,8 @@ function AdminPage() {
                 setLinks((prev) => prev.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))
               }
             />
-            <div className="flex flex-wrap items-center gap-3">
-              <label className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="mt-1 flex flex-wrap items-center gap-3">
+              <label className="mr-auto flex items-center gap-2 text-sm text-muted-foreground">
                 <input
                   type="checkbox"
                   checked={l.is_visible}
@@ -259,23 +264,23 @@ function AdminPage() {
                 />
                 Ko'rinsin
               </label>
-              <button type="button" onClick={() => saveLink(l)} className={pill}>
+              <button type="button" onClick={() => saveLink(l)} className={`${pill} px-6`}>
                 Saqlash
               </button>
-              <button type="button" onClick={() => removeLink(l.id)} className={ghost}>
+              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost} px-6`}>
                 O'chirish
               </button>
             </div>
           </div>
         ))}
-        <button type="button" onClick={addLink} className={`${ghost} self-start`}>
+        <button type="button" onClick={addLink} className={`${ghost} w-full`}>
           + Havola qo'shish
         </button>
       </section>
 
       <Link
         to="/"
-        className="mt-14 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-accent"
+        className="mt-10 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-accent"
       >
         ← Vizitkaga qaytish
       </Link>
