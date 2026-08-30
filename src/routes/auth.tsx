@@ -42,46 +42,49 @@ function AuthPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-[360px] flex-col justify-center px-6 py-20">
-      <h1 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-        Admin kirish
-      </h1>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Vizitkani tahrirlash uchun login va parolni kiriting.
-      </p>
+    <main className="flex min-h-dvh w-full items-center justify-center px-6 py-16">
+      <div className="w-full max-w-[380px] rounded-3xl border border-hair bg-card/40 px-7 py-9 shadow-2xl shadow-black/20 backdrop-blur-sm">
+        <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-hair text-accent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-5" aria-hidden="true">
+            <rect x="4" y="10.5" width="16" height="10" rx="3" />
+            <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
+          </svg>
+        </div>
 
-      <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-3">
-        <input
-          type="text"
-          required
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Login"
-          autoCapitalize="none"
-          autoComplete="username"
-          className="w-full rounded-full border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent"
-        />
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Parol"
-          autoComplete="current-password"
-          className="w-full rounded-full border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent"
-        />
-        <button
-          type="submit"
-          disabled={busy}
-          className="w-full rounded-full bg-accent py-3 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60"
-        >
-          {busy ? "Kirilmoqda…" : "Kirish"}
-        </button>
-      </form>
+        <h1 className="mt-5 text-center font-display text-2xl font-semibold tracking-tight text-foreground">
+          Admin kirish
+        </h1>
 
-      <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-        Ro'yxatdan o'tish yopiq
-      </p>
+        <form onSubmit={onSubmit} className="mt-7 flex flex-col gap-3">
+          <input
+            type="text"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Login"
+            autoCapitalize="none"
+            autoComplete="username"
+            className="w-full rounded-full border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-accent"
+          />
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Parol"
+            autoComplete="current-password"
+            className="w-full rounded-full border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-accent"
+          />
+          <button
+            type="submit"
+            disabled={busy}
+            className="mt-1 w-full rounded-full bg-accent py-3 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60"
+          >
+            {busy ? "Kirilmoqda…" : "Kirish"}
+          </button>
+        </form>
+      </div>
     </main>
   );
 }
+
