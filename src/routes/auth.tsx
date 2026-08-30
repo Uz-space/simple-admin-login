@@ -43,19 +43,12 @@ function AuthPage() {
 
   return (
     <main className="flex min-h-dvh w-full items-center justify-center px-6 py-16">
-      <div className="w-full max-w-[380px] rounded-3xl border border-hair bg-card/40 px-7 py-9 shadow-2xl shadow-black/20 backdrop-blur-sm">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-hair text-accent">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-5" aria-hidden="true">
-            <rect x="4" y="10.5" width="16" height="10" rx="3" />
-            <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
-          </svg>
-        </div>
-
-        <h1 className="mt-5 text-center font-display text-2xl font-semibold tracking-tight text-foreground">
+      <div className="w-full max-w-[340px]">
+        <h1 className="text-center font-display text-3xl font-semibold tracking-tight text-foreground">
           Admin kirish
         </h1>
 
-        <form onSubmit={onSubmit} className="mt-7 flex flex-col gap-3">
+        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-3">
           <input
             type="text"
             required
