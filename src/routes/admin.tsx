@@ -252,10 +252,10 @@ function AdminPage() {
             <img
               src={profile.avatar_url}
               alt="Avatar"
-              className="h-16 w-16 shrink-0 rounded-full object-cover"
+              className="h-16 w-16 shrink-0 rounded-full border-2 border-hair object-cover"
             />
           ) : (
-            <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full border border-hair text-[10px] text-muted-foreground">
+            <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full border-2 border-hair text-[10px] text-muted-foreground">
               rasm
             </div>
           )}
