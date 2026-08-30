@@ -48,7 +48,7 @@ function AuthPage() {
           Admin kirish
         </h1>
 
-        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-3">
+        <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-2.5">
           <input
             type="text"
             required
@@ -57,7 +57,7 @@ function AuthPage() {
             placeholder="Login"
             autoCapitalize="none"
             autoComplete="username"
-            className="w-full rounded-full border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-accent"
+            className="w-full rounded-full border border-hair bg-transparent px-4 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-accent"
           />
           <input
             type="password"
@@ -66,12 +66,12 @@ function AuthPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Parol"
             autoComplete="current-password"
-            className="w-full rounded-full border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-accent"
+            className="w-full rounded-full border border-hair bg-transparent px-4 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-accent"
           />
           <button
             type="submit"
             disabled={busy}
-            className="mt-1 w-full rounded-full bg-accent py-3 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60"
+            className="mt-1 w-full rounded-full bg-accent py-2 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60"
           >
             {busy ? "Kirilmoqda…" : "Kirish"}
           </button>
