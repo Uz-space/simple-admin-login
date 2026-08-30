@@ -213,12 +213,53 @@ function AdminPage() {
           placeholder="Qisqacha ma'lumot"
           onChange={(e) => setProfile((p) => (p ? { ...p, bio: e.target.value } : p))}
         />
-        <input
-          className={field}
-          value={profile?.avatar_url ?? ""}
-          placeholder="Avatar rasm havolasi (ixtiyoriy)"
-          onChange={(e) => setProfile((p) => (p ? { ...p, avatar_url: e.target.value } : p))}
-        />
+        <div className="flex items-center gap-4 rounded-2xl border border-hair p-4">
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt="Avatar"
+              className="h-16 w-16 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full border border-hair text-[10px] text-muted-foreground">
+              rasm
+            </div>
+          )}
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <span className="text-sm text-muted-foreground">Avatar rasmi</span>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className={`${ghost} px-6`}
+              >
+                {uploading ? "Yuklanmoqda…" : "Rasm tanlash"}
+              </button>
+              {profile?.avatar_url ? (
+                <button
+                  type="button"
+                  onClick={() => setProfile((p) => (p ? { ...p, avatar_url: null } : p))}
+                  className={`${ghost} px-6`}
+                >
+                  O'chirish
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (file) uploadAvatar(file);
+            }}
+          />
+        </div>
+
         <button
           type="button"
           onClick={saveProfile}
