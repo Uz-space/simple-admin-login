@@ -24,6 +24,18 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (active && data.session) await navigate({ to: "/admin", replace: true });
+    })();
+    return () => {
+      active = false;
+    };
+  }, [navigate]);
+
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
