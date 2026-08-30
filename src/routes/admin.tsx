@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -54,6 +54,8 @@ function AdminPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -99,6 +101,38 @@ function AdminPage() {
     };
   }, [navigate]);
 
+
+  async function uploadAvatar(file: File) {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Faqat rasm fayli yuklanadi");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Rasm hajmi 5MB dan kichik bo'lishi kerak");
+      return;
+    }
+    setUploading(true);
+    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `avatar-${Date.now()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(path, file, { upsert: true, contentType: file.type });
+    if (uploadError) {
+      setUploading(false);
+      toast.error(uploadError.message);
+      return;
+    }
+    const { data, error } = await supabase.storage
+      .from("avatars")
+      .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+    setUploading(false);
+    if (error || !data?.signedUrl) {
+      toast.error(error?.message ?? "Rasm havolasini olish bo'lmadi");
+      return;
+    }
+    setProfile((p) => (p ? { ...p, avatar_url: data.signedUrl } : p));
+    toast.success("Rasm yuklandi — saqlashni bosing");
+  }
 
   async function saveProfile() {
     if (!profile) return;
