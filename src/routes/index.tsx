@@ -44,10 +44,10 @@ function Vizitka() {
         <img
           src={profile.avatar_url}
           alt={profile.name}
-          className="size-28 rounded-full object-cover"
+          className="size-28 rounded-full border-2 border-hair object-cover"
         />
       ) : (
-        <div className="grid size-28 place-items-center rounded-full bg-muted font-display text-2xl text-muted-foreground">
+        <div className="grid size-28 place-items-center rounded-full border-2 border-hair bg-muted font-display text-2xl text-muted-foreground">
           {initials(profile?.name ?? "")}
         </div>
       )}
