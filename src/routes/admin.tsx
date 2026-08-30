@@ -53,13 +53,27 @@ function AdminPage() {
 
   useEffect(() => {
     let active = true;
-    (async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) {
-        await navigate({ to: "/auth" });
+
+    async function waitForSession() {
+      // Preview auth storage restores asynchronously, so retry briefly
+      // instead of bouncing to /auth on the first empty read.
+      for (let i = 0; i < 12; i++) {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) return data.session;
+        if (!active) return null;
+        await new Promise((r) => setTimeout(r, 250));
+      }
+      return null;
+    }
+
+    async function load() {
+      const session = await waitForSession();
+      if (!active) return;
+      if (!session) {
+        await navigate({ to: "/auth", replace: true });
         return;
       }
-      const userId = sessionData.session.user.id;
+      const userId = session.user.id;
       const [roleRes, profileRes, linksRes] = await Promise.all([
         supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin"),
         supabase.from("profile").select("id,name,tagline,bio,avatar_url").limit(1).maybeSingle(),
@@ -73,11 +87,14 @@ function AdminPage() {
       setProfile((profileRes.data as Profile | null) ?? null);
       setLinks((linksRes.data as LinkRow[] | null) ?? []);
       setLoading(false);
-    })();
+    }
+
+    load();
     return () => {
       active = false;
     };
   }, [navigate]);
+
 
   async function saveProfile() {
     if (!profile) return;
