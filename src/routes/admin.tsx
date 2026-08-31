@@ -56,6 +56,7 @@ function AdminPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [dirtyLinkIds, setDirtyLinkIds] = useState<Set<string>>(new Set());
+  const [savingLinkId, setSavingLinkId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -155,6 +156,7 @@ function AdminPage() {
   }
 
   async function saveLink(link: LinkRow) {
+    setSavingLinkId(link.id);
     const { error } = await supabase
       .from("links")
       .update({
@@ -164,6 +166,7 @@ function AdminPage() {
         is_visible: true,
       })
       .eq("id", link.id);
+    setSavingLinkId(null);
     if (error) {
       toast.error(error.message);
     } else {
@@ -347,12 +350,22 @@ function AdminPage() {
               }}
             />
             <div className="mt-1 flex flex-wrap justify-end gap-2">
-              {dirtyLinkIds.has(l.id) && (
-                <button type="button" onClick={() => saveLink(l)} className={`${pill}`}>
-                  Saqlash
+              {(dirtyLinkIds.has(l.id) || savingLinkId === l.id) && (
+                <button
+                  type="button"
+                  onClick={() => saveLink(l)}
+                  disabled={savingLinkId === l.id}
+                  className={`${pill}`}
+                >
+                  {savingLinkId === l.id ? "Saqlanmoqda…" : "Saqlash"}
                 </button>
               )}
-              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost}`}>
+              <button
+                type="button"
+                onClick={() => removeLink(l.id)}
+                disabled={savingLinkId === l.id}
+                className={`${ghost} ${dirtyLinkIds.has(l.id) || savingLinkId === l.id ? "" : "w-full"}`}
+              >
                 O'chirish
               </button>
             </div>
