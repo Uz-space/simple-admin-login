@@ -298,7 +298,7 @@ function AdminPage() {
           type="button"
           onClick={saveProfile}
           disabled={saving}
-          className={`${pill} mt-1 w-full sm:min-w-[140px] sm:self-end`}
+          className={`${pill} mt-1 w-full sm:min-w-[120px] sm:self-end`}
         >
           {saving ? "Saqlanmoqda…" : "Saqlash"}
         </button>
