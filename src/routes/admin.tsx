@@ -38,10 +38,12 @@ type LinkRow = {
 
 const field =
   "w-full rounded-2xl border border-hair bg-transparent px-4 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent";
+const btnBase =
+  "h-10 min-w-[120px] rounded-2xl px-4 text-center text-sm font-medium transition-all disabled:opacity-60";
 const pill =
-  "min-w-[120px] rounded-2xl border border-accent bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
+  `${btnBase} border border-accent bg-accent text-accent-foreground hover:brightness-110`;
 const ghost =
-  "min-w-[120px] rounded-2xl border border-hair bg-transparent px-4 py-2 text-center text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent disabled:opacity-60";
+  `${btnBase} border border-hair bg-transparent text-foreground hover:border-accent hover:text-accent`;
 const card =
   "rounded-3xl border border-hair bg-card/40 p-6";
 const sectionTitle =
@@ -296,7 +298,7 @@ function AdminPage() {
           type="button"
           onClick={saveProfile}
           disabled={saving}
-          className={`${pill} mt-1 w-full sm:min-w-[140px] sm:self-end`}
+          className={`${pill} mt-1 w-full sm:min-w-[120px] sm:self-end`}
         >
           {saving ? "Saqlanmoqda…" : "Saqlash"}
         </button>
