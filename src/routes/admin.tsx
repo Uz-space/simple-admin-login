@@ -55,6 +55,7 @@ function AdminPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<LinkRow[]>([]);
+  const [dirtyLinkIds, setDirtyLinkIds] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -160,24 +161,34 @@ function AdminPage() {
         label: link.label,
         url: link.url,
         sort_order: link.sort_order,
-        is_visible: link.is_visible,
+        is_visible: true,
       })
       .eq("id", link.id);
-    if (error) toast.error(error.message);
-    else toast.success("Havola saqlandi");
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Havola saqlandi");
+      setDirtyLinkIds((prev) => {
+        const next = new Set(prev);
+        next.delete(link.id);
+        return next;
+      });
+    }
   }
 
   async function addLink() {
     const { data, error } = await supabase
       .from("links")
-      .insert({ label: "Yangi havola", url: "https://", sort_order: links.length + 1 })
+      .insert({ label: "Yangi havola", url: "https://", sort_order: links.length + 1, is_visible: true })
       .select("id,label,url,sort_order,is_visible")
       .single();
     if (error) {
       toast.error(error.message);
       return;
     }
-    setLinks((prev) => [...prev, data as LinkRow]);
+    const newLink = data as LinkRow;
+    setLinks((prev) => [...prev, newLink]);
+    setDirtyLinkIds((prev) => new Set(prev).add(newLink.id));
   }
 
   async function removeLink(id: string) {
@@ -187,6 +198,11 @@ function AdminPage() {
       return;
     }
     setLinks((prev) => prev.filter((l) => l.id !== id));
+    setDirtyLinkIds((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
   }
 
   async function signOut() {
