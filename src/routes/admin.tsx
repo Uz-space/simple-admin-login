@@ -266,7 +266,7 @@ function AdminPage() {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
-                className={`${ghost} px-6`}
+                className={`${ghost}`}
               >
                 {uploading ? "Yuklanmoqda…" : "Rasm tanlash"}
               </button>
@@ -274,7 +274,7 @@ function AdminPage() {
                 <button
                   type="button"
                   onClick={() => setProfile((p) => (p ? { ...p, avatar_url: null } : p))}
-                  className={`${ghost} px-6`}
+                  className={`${ghost}`}
                 >
                   O'chirish
                 </button>
@@ -298,7 +298,7 @@ function AdminPage() {
           type="button"
           onClick={saveProfile}
           disabled={saving}
-          className={`${pill} mt-1 w-full sm:w-auto sm:self-end sm:px-8`}
+          className={`${pill} mt-1 w-full sm:min-w-[140px] sm:self-end`}
         >
           {saving ? "Saqlanmoqda…" : "Saqlash"}
         </button>
@@ -339,10 +339,10 @@ function AdminPage() {
                 />
                 Ko'rinsin
               </label>
-              <button type="button" onClick={() => saveLink(l)} className={`${pill} px-6`}>
+              <button type="button" onClick={() => saveLink(l)} className={`${pill}`}>
                 Saqlash
               </button>
-              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost} px-6`}>
+              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost}`}>
                 O'chirish
               </button>
             </div>
