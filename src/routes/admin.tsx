@@ -37,11 +37,11 @@ type LinkRow = {
 };
 
 const field =
-  "w-full rounded-2xl border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent";
+  "w-full rounded-2xl border border-hair bg-transparent px-4 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent";
 const pill =
-  "rounded-2xl border border-accent bg-accent px-4 py-3 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
+  "min-w-[120px] rounded-2xl border border-accent bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
 const ghost =
-  "rounded-2xl border border-hair bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent";
+  "min-w-[120px] rounded-2xl border border-hair bg-transparent px-4 py-2 text-center text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent disabled:opacity-60";
 const card =
   "rounded-3xl border border-hair bg-card/40 p-6";
 const sectionTitle =
@@ -266,7 +266,7 @@ function AdminPage() {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
-                className={`${ghost} px-6`}
+                className={`${ghost}`}
               >
                 {uploading ? "Yuklanmoqda…" : "Rasm tanlash"}
               </button>
@@ -274,7 +274,7 @@ function AdminPage() {
                 <button
                   type="button"
                   onClick={() => setProfile((p) => (p ? { ...p, avatar_url: null } : p))}
-                  className={`${ghost} px-6`}
+                  className={`${ghost}`}
                 >
                   O'chirish
                 </button>
@@ -298,7 +298,7 @@ function AdminPage() {
           type="button"
           onClick={saveProfile}
           disabled={saving}
-          className={`${pill} mt-1 w-full sm:w-auto sm:self-end sm:px-8`}
+          className={`${pill} mt-1 w-full sm:min-w-[140px] sm:self-end`}
         >
           {saving ? "Saqlanmoqda…" : "Saqlash"}
         </button>
@@ -339,10 +339,10 @@ function AdminPage() {
                 />
                 Ko'rinsin
               </label>
-              <button type="button" onClick={() => saveLink(l)} className={`${pill} px-6`}>
+              <button type="button" onClick={() => saveLink(l)} className={`${pill}`}>
                 Saqlash
               </button>
-              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost} px-6`}>
+              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost}`}>
                 O'chirish
               </button>
             </div>
