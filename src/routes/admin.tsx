@@ -56,6 +56,7 @@ function AdminPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [dirtyLinkIds, setDirtyLinkIds] = useState<Set<string>>(new Set());
+  const [savingLinkId, setSavingLinkId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
