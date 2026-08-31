@@ -37,11 +37,11 @@ type LinkRow = {
 };
 
 const field =
-  "w-full rounded-2xl border border-hair bg-transparent px-4 py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent";
+  "w-full rounded-2xl border border-hair bg-transparent px-4 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-accent";
 const pill =
-  "rounded-2xl border border-accent bg-accent px-4 py-3 text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
+  "min-w-[120px] rounded-2xl border border-accent bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground transition-all hover:brightness-110 disabled:opacity-60";
 const ghost =
-  "rounded-2xl border border-hair bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent";
+  "min-w-[120px] rounded-2xl border border-hair bg-transparent px-4 py-2 text-center text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent disabled:opacity-60";
 const card =
   "rounded-3xl border border-hair bg-card/40 p-6";
 const sectionTitle =
