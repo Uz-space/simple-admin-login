@@ -350,12 +350,22 @@ function AdminPage() {
               }}
             />
             <div className="mt-1 flex flex-wrap justify-end gap-2">
-              {dirtyLinkIds.has(l.id) && (
-                <button type="button" onClick={() => saveLink(l)} className={`${pill}`}>
-                  Saqlash
+              {(dirtyLinkIds.has(l.id) || savingLinkId === l.id) && (
+                <button
+                  type="button"
+                  onClick={() => saveLink(l)}
+                  disabled={savingLinkId === l.id}
+                  className={`${pill}`}
+                >
+                  {savingLinkId === l.id ? "Saqlanmoqda…" : "Saqlash"}
                 </button>
               )}
-              <button type="button" onClick={() => removeLink(l.id)} className={`${ghost}`}>
+              <button
+                type="button"
+                onClick={() => removeLink(l.id)}
+                disabled={savingLinkId === l.id}
+                className={`${ghost} ${dirtyLinkIds.has(l.id) || savingLinkId === l.id ? "" : "w-full"}`}
+              >
                 O'chirish
               </button>
             </div>
