@@ -247,39 +247,37 @@ function AdminPage() {
           placeholder="Qisqacha ma'lumot"
           onChange={(e) => setProfile((p) => (p ? { ...p, bio: e.target.value } : p))}
         />
-        <div className="flex items-center gap-4 rounded-2xl border border-hair p-4">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-hair p-4">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt="Avatar"
-              className="h-16 w-16 shrink-0 rounded-full border-2 border-hair object-cover"
+              className="h-20 w-20 shrink-0 rounded-full border-2 border-hair object-cover"
             />
           ) : (
-            <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full border-2 border-hair text-[10px] text-muted-foreground">
+            <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full border-2 border-hair text-xs text-muted-foreground">
               rasm
             </div>
           )}
-          <div className="flex min-w-0 flex-1 flex-col gap-2">
-            <span className="text-sm text-muted-foreground">Avatar rasmi</span>
-            <div className="flex flex-wrap gap-2">
+          <span className="text-sm text-muted-foreground">Avatar rasmi</span>
+          <div className="flex flex-wrap justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className={`${ghost}`}
+            >
+              {uploading ? "Yuklanmoqda…" : "Rasm tanlash"}
+            </button>
+            {profile?.avatar_url ? (
               <button
                 type="button"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
+                onClick={() => setProfile((p) => (p ? { ...p, avatar_url: null } : p))}
                 className={`${ghost}`}
               >
-                {uploading ? "Yuklanmoqda…" : "Rasm tanlash"}
+                O'chirish
               </button>
-              {profile?.avatar_url ? (
-                <button
-                  type="button"
-                  onClick={() => setProfile((p) => (p ? { ...p, avatar_url: null } : p))}
-                  className={`${ghost}`}
-                >
-                  O'chirish
-                </button>
-              ) : null}
-            </div>
+            ) : null}
           </div>
           <input
             ref={fileInputRef}
