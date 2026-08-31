@@ -156,6 +156,7 @@ function AdminPage() {
   }
 
   async function saveLink(link: LinkRow) {
+    setSavingLinkId(link.id);
     const { error } = await supabase
       .from("links")
       .update({
@@ -165,6 +166,7 @@ function AdminPage() {
         is_visible: true,
       })
       .eq("id", link.id);
+    setSavingLinkId(null);
     if (error) {
       toast.error(error.message);
     } else {
